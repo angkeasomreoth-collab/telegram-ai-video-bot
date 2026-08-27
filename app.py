@@ -2,6 +2,7 @@ import os
 import re
 import time
 import asyncio
+import threading
 import cv2
 from PIL import Image
 from google import genai
@@ -15,6 +16,18 @@ from telegram.ext import (
     filters,
 )
 from telegram.request import HTTPXRequest
+from flask import Flask
+
+# ================= FLASK SERVER FOR RENDER (FREE WEB SERVICE) =================
+web_app = Flask(__name__)
+
+@web_app.route('/')
+def home():
+    return "AI Video Prompt Bot is running 24/7!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 8080))
+    web_app.run(host="0.0.0.0", port=port)
 
 # ================= 1. CONFIGURATION =================
 TELEGRAM_BOT_TOKEN = "8994686368:AAEa2EYdCFqr1pRWHYG7T-z1Nbmlk1IIolY"
@@ -262,7 +275,7 @@ SFX / Foley: <Sound Effects>
 <Single cohesive paragraph for Kling/Runway Gen-3 starting immediately with camera setup, style, costume, acting, and background.>
 """
                     res = client.models.generate_content(
-                        model="gemini-2.5-flash",
+                        model="gemini-3.6-flash",
                         contents=[prompt_instruction, pil_img]
                     )
                     f.write(f"==================================================\n")
@@ -286,6 +299,9 @@ SFX / Foley: <Sound Effects>
 
 # ================= 4. MAIN ENTRY =================
 if __name__ == "__main__":
+    # ចាប់ផ្តើម Web Server សម្រាប់ Render
+    threading.Thread(target=run_flask, daemon=True).start()
+
     request_config = HTTPXRequest(
         connect_timeout=30.0,
         read_timeout=30.0,
