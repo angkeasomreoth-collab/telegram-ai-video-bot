@@ -30,7 +30,7 @@ def run_flask():
     web_app.run(host="0.0.0.0", port=port)
 
 # ================= 1. CONFIGURATION =================
-TELEGRAM_BOT_TOKEN = "8994686368:AAEa2EYdCFqr1pRWHYG7T-z1Nbmlk1IIolY"
+TELEGRAM_BOT_TOKEN = "8994686368:AAEa2EYdCFqrlpRWHYG7T-z1Nbmlk1IIolY"
 GEMINI_API_KEY = "AQ.Ab8RN6Lf2Szg-t97nEE6grrhQYuqjOP3rYHVJ5L1jJmN9yPKbw"
 
 client = genai.Client(api_key=GEMINI_API_KEY)
